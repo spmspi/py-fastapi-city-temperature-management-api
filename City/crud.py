@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from City.models import DBCity
@@ -47,3 +47,15 @@ async def get_city_by_name(
             DBCity.name == name
         )
     )
+
+async def delete_city(db: AsyncSession, city_id: int) -> None:
+    stmt = select(DBCity).options(selectinload(DBCity.temperatures)).where(DBCity.id == city_id)
+    db_city = await db.scalar(stmt)
+
+    if not db_city:
+        return None
+
+    await db.delete(db_city)
+    await db.commit()
+
+    return db_city

@@ -12,7 +12,7 @@ async def read_city(db: Annotated[AsyncSession, Depends(get_db)]):
     return await crud.get_all_city(db=db)
 
 
-@router.post("/city/", response_model=schemas.City)
+@router.post("/cities/", response_model=schemas.City)
 async def create_city(
     city: schemas.CityCreate,
     db: Annotated[AsyncSession, Depends(get_db)]
@@ -40,4 +40,14 @@ async def read_single_city(
     if not db_city:
         raise HTTPException(status_code=404, detail="City not found")
 
+    return db_city
+
+@router.delete("/cities/{city_id}/", response_model=schemas.City)
+async def delete_city(
+    city_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)]
+):
+    db_city = await crud.delete_city(db=db, city_id=city_id)
+    if not db_city:
+        raise HTTPException(status_code=404, detail="City not found")
     return db_city

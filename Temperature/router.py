@@ -19,7 +19,7 @@ async def read_temperatures(
     return await crud.get_temperatures_list(db=db, city_id=city_id)
 
 
-@router.post("/temperatures/")
+@router.post("/temperatures/update")
 async def create_temperatures(
         db: Annotated[AsyncSession, Depends(get_db)],
 ):

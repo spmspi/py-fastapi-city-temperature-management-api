@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, ConfigDict
 
 
@@ -14,4 +16,5 @@ class Temperature(TemperatureBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    date_time: datetime
     city_id: int
