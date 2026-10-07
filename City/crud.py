@@ -48,7 +48,7 @@ async def get_city_by_name(
         )
     )
 
-async def delete_city(db: AsyncSession, city_id: int) -> None:
+async def delete_city(db: AsyncSession, city_id: int) -> DBCity | None:
     stmt = select(DBCity).options(selectinload(DBCity.temperatures)).where(DBCity.id == city_id)
     db_city = await db.scalar(stmt)
 

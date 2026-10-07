@@ -28,7 +28,7 @@ async def create_temperatures(
     results = await asyncio.gather(*tasks)
     to_create = []
     for city, weather in zip(cities, results):
-        to_create.append(DBTemperature(city_id=city.id, temperature=weather["temperature"]))
-
+        if weather is not None:
+            to_create.append(DBTemperature(city_id=city.id, temperature=weather["temperature"]))
     await crud.create_temperature(db=db, temperatures=to_create)
     return {"status": "ok", "updated_count": len(to_create)}
